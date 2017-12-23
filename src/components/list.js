@@ -1,7 +1,13 @@
 import React from 'react'
 import { Button, Table, Grid, Loader, Dimmer, Segment, Checkbox, Sidebar, Menu, Icon, Modal, Header, Form } from 'semantic-ui-react'
+import ModalForm from '../containers/modal'
+
 export default class List extends React.Component {
-  
+
+  componentDidMount() {
+    this.props.fetchPoints()
+  }
+
   render() {
     return (<div>
           {this.props.points.length > 0 ? <div>
@@ -28,7 +34,7 @@ export default class List extends React.Component {
               <Table.Row>
                 <Table.HeaderCell />
                 <Table.HeaderCell colSpan='4'>
-                  <Button floated='right' icon labelPosition='left' primary size='small'>
+                  <Button floated='right' icon labelPosition='left' primary size='small' onClick={this.props.togglemodal}>
                     Add Point <Icon name='point' />
                   </Button>
                 </Table.HeaderCell>
@@ -40,6 +46,7 @@ export default class List extends React.Component {
             </Dimmer>
             </Segment>
       }
+      <ModalForm />
       </div>
     )
   }
