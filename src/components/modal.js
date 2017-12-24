@@ -1,6 +1,6 @@
 /*global google */
 import React from 'react'
-import { Button, Header, Image, Modal, Icon, Form, Accordion } from 'semantic-ui-react'
+import { Button, Header, Image, Modal, Icon, Form, Accordion, Divider } from 'semantic-ui-react'
 import { Field, reduxForm } from 'redux-form'
 import { compose, withProps, withStateHandlers, withHandlers, withState } from "recompose"
 import {
@@ -108,7 +108,7 @@ const FormText = props => (
 )
 
 class FormModal extends React.Component {
-  state = { accordionOpen: false }
+  state = { accordionOpen: true }
 
   toggleAccordion = () => {
     this.setState ({ accordionOpen: !this.state.accordionOpen })
@@ -129,58 +129,59 @@ class FormModal extends React.Component {
       <Modal open={this.props.modal.show} size='large'>
         <Modal.Header>Add a new point</Modal.Header>
           <Modal.Content>
-          <Form onSubmit={this.props.handleSubmit(this.addPoint)}>
-            <Form.Group widths='equal'>
-              <Field
-                name="title"
-                component={FormInput}
-                type="text"
-                placeholder="First Name"
-              />
-              <Field
-                name="category"
-                component={FormSelect}
-                placeholder="Category"
-              />
-            </Form.Group> 
-            <Form.Group widths='equal'>
-              <Field
-                parse={value => Number(value)}
-                name="lat"
-                component={FormInput}
-                type="number"
-                placeholder="Latitude"
-              />
-              <Field
-                parse={value => Number(value)}
-                name="lng"
-                component={FormInput}
-                type="number"
-                placeholder="Longitude"
-              />
-            </Form.Group> 
-              <Field
-                name="description"
-                component={FormText}
-                placeholder="Description..."
-                type="text"
-              />
-            <Accordion>
-              <Accordion.Title active={this.state.accordionOpen} onClick={this.toggleAccordion}>
-                <Icon name='dropdown' />
-                Show map
-              </Accordion.Title>
-              <Accordion.Content active={this.state.accordionOpen}>
-                <MyMapComponent changeCoordinates={this.changeCoordinates}/>
-              </Accordion.Content>
-            </Accordion>
-            <Button onClick={this.props.togglemodal}>
-              <Icon name='remove' /> Cancel
-          </Button>
-            <Button loading={this.props.addPointState === 'requested' ? true: false} type='submit' color='green'>
-              <Icon name='checkmark' /> Add
-          </Button>
-          </Form>
+            <Form onSubmit={this.props.handleSubmit(this.addPoint)}>
+              <Form.Group widths='equal'>
+                <Field
+                  name="title"
+                  component={FormInput}
+                  type="text"
+                  placeholder="First Name"
+                />
+                <Field
+                  name="category"
+                  component={FormSelect}
+                  placeholder="Category"
+                />
+              </Form.Group> 
+              <Form.Group widths='equal'>
+                <Field
+                  parse={value => Number(value)}
+                  name="lat"
+                  component={FormInput}
+                  type="number"
+                  placeholder="Latitude"
+                />
+                <Field
+                  parse={value => Number(value)}
+                  name="lng"
+                  component={FormInput}
+                  type="number"
+                  placeholder="Longitude"
+                />
+              </Form.Group> 
+                <Field
+                  name="description"
+                  component={FormText}
+                  placeholder="Description..."
+                  type="text"
+                />
+              <Accordion>
+                <Accordion.Title active={this.state.accordionOpen} onClick={this.toggleAccordion}>
+                  <Icon name='dropdown' />
+                  Show map
+                </Accordion.Title>
+                <Accordion.Content active={this.state.accordionOpen}>
+                  <MyMapComponent changeCoordinates={this.changeCoordinates}/>
+                </Accordion.Content>
+              </Accordion>
+              <Divider hidden />
+              <Button onClick={() => { this.props.togglemodal(), this.props.reset() }}>
+                <Icon name='remove'/> Cancel
+              </Button>
+              <Button loading={this.props.addPointState === 'requested' ? true: false} type='submit' color='green'>
+                <Icon name='checkmark'/> Add
+              </Button>
+            </Form>
           </Modal.Content>
       </Modal>
     )

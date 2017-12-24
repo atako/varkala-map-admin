@@ -7,6 +7,9 @@ import * as actions from '../actions'
 const points = handleActions({
   [actions.fetchPointSuccess](state, { payload }) {
     return payload.items
+  },
+  [actions.deletePointSuccess](state, { payload}) {
+    return payload.items
   }
 }, [])
 
@@ -30,6 +33,18 @@ const pointsLoginState = handleActions({
     return 'failed'
   },
   [actions.fetchLoginSuccess]() {
+    return 'successed'
+  }
+}, 'none')
+
+const pointDeleteState = handleActions({
+  [actions.deletePointRequest]() {
+    return 'requested'
+  },
+  [actions.deletePointFailure]() {
+    return 'failed'
+  },
+  [actions.deletePointSuccess]() {
     return 'successed'
   }
 }, 'none')
@@ -76,5 +91,6 @@ export default combineReducers({
   user,
   modal,
   pointAddState,
-  form: formReducer
+  form: formReducer,
+  pointDeleteState
 })

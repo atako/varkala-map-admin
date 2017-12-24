@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions'
 import firebase, { auth, provider } from '../firebase'
 import uuid from 'uuid/v4'
+import { reset } from 'redux-form'
 
 export const fetchPointSuccess = createAction('POINTS_FETCH_SUCCESS')
 export const fetchPointRequest = createAction('POINTS_FETCH_REQUEST')
@@ -82,12 +83,30 @@ export const addPoint = (values) => async(dispatch) => {
   const objectItem = { title: values.title, description: description }
   try {
     const pointsRef = firebase.database().ref('points')
-    pointsRef.push({ ...values })
+    pointsRef.child(id).set({ ...values })
     const objectsRef = firebase.database().ref('objects')
     objectsRef.child(id).set({ ...objectItem })
+    dispatch(reset('newPoint'))
     dispatch(addPointSuccess())
   } catch (e) {
     dispatch(addPointFailure())
+  }
+}
+
+
+
+export const deletePointRequest = createAction('POINT_DELETE_REQUEST')
+export const deletePointSuccess = createAction('POINT_DELETE_SUCCESS')
+export const deletePointFailure = createAction('POINT_DELETE_FAILURE')
+
+export const deletePoint = (pointId) => async(dispatch) => {
+  dispatch(deletePointRequest())
+  try {
+    const pointRef = firebase.database().ref(`/points/${pointId}`)
+    pointRef.remove()
+    dispatch(deletePointSuccess())
+  } catch (e) {
+
   }
 }
   // handleSubmit(e) {

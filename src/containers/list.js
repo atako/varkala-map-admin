@@ -4,7 +4,7 @@ import * as actionCreators from '../actions'
 const mapStateToProps = state => {
   const props = {
     points: state.points,
-    modal: state.modal
+    modal: state.modal,
   }
   return props
 }
