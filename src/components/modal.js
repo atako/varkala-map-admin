@@ -22,12 +22,12 @@ const MyMapComponent = compose(
   withProps({
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?AIzaSyBBNTji--JP2BD3lbsA8aLUIRRklOCunQA&v=3.exp&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `300px` }} />,
+    loadingElement: <div style={{ height: `450px` }} />,
     containerElement: <div style={{
-      height: '300px'
+      height: '450px'
     }} />,
     mapElement: <div style={{
-      height: '300px'
+      height: '450px'
     }} />
   }),
   withState('point', 'onDragEnd', { lat: 8.737457, lng: 76.708158 }),
@@ -74,7 +74,7 @@ const MyMapComponent = compose(
       onDrag={props.onMarkerRelease}
       onDragEnd={() => props.changeCoordinates(props.point.lat, props.point.lng)}
     />
-      )} 
+      
     </GoogleMap>
   )
   )
@@ -128,8 +128,8 @@ class FormModal extends React.Component {
 
   render() {
     return (
-      <Modal open={this.props.modal.show} size='large'>
-        <Modal.Header>Add a new point</Modal.Header>
+      <Modal open={this.props.modal.show} size='fullscreen'>
+        <Modal.Header>{this.props.modal.edit? 'Edit the point' : 'Add a new point' }</Modal.Header>
           <Modal.Content>
             <Form onSubmit={this.props.handleSubmit(this.addPoint)}>
               <Form.Group widths='equal'>
@@ -167,21 +167,21 @@ class FormModal extends React.Component {
                   placeholder="Description..."
                   type="text"
                 />
-              <Accordion>
+              {/* <Accordion style={{paddingBottom: '30px'}}>
                 <Accordion.Title active={this.state.accordionOpen} onClick={this.toggleAccordion}>
                   <Icon name='dropdown' />
                   Show map
                 </Accordion.Title>
-                <Accordion.Content active={this.state.accordionOpen}>
+                <Accordion.Content active={this.state.accordionOpen}> */}
                   <MyMapComponent changeCoordinates={this.changeCoordinates}/>
-                </Accordion.Content>
-              </Accordion>
-              <Divider hidden />
+                {/* </Accordion.Content> */}
+              <Divider hidden ></Divider>
+              {/* </Accordion> */}
               <Button onClick={() => { this.props.togglemodal(), this.props.reset() }}>
                 <Icon name='remove'/> Cancel
               </Button>
               <Button type='submit' color='green'>
-                <Icon name='checkmark'/> { this.props.modal.edit ? 'Save' : 'Add' }
+                <Icon name='checkmark'/> {this.props.modal.edit ? 'Save' : 'Add'}
               </Button>
             </Form>
           </Modal.Content>
