@@ -109,16 +109,22 @@ export const deletePoint = (pointId) => async(dispatch) => {
 
   }
 }
-  // handleSubmit(e) {
-  //   e.preventDefault();
-  //   const itemsRef = firebase.database().ref('items')
-  //   const item = {
-  //     title: this.state.currentItem,
-  //     user: this.state.user.displayName || this.state.user.email
-  //   }
-  //   itemsRef.push(item);
-  //   this.setState({
-  //     currentItem: '',
-  //     username: ''
-  //   });
-  // }
+
+export const editPointRequest = createAction('POINT_UPDATE_REQUEST')
+export const editPointSuccess  = createAction('POINT_UPDATE_SUCCESS')
+export const editPointFailure = createAction('POINT_UPDATE_FAILURE')
+export const toggleEdit = createAction('POINT_TOGGLE_EDIT')
+
+export const editPoint = (pointValues) => async(dispatch) => {
+  // dispatch(editPointRequest())
+  try {
+    const pointRef = firebase.database().ref(`points/${pointValues.id}`)
+    const objectRef = firebase.database().ref(`objects/${pointValues.id}`)
+    pointRef.update(pointValues)
+    objectRef.update({ title: pointValues.title, description: pointValues.description})
+    dispatch(toggleEdit())
+  } catch (e) {
+
+  }
+}
+

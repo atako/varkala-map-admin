@@ -12,7 +12,7 @@ export default class List extends React.Component {
     this.props.fetchPoints()
   }
 
-  toggleModal = (id) => {
+  toggleDeleteModal = (id) => {
     this.setState({ showModal: !this.state.showModal, id: id })
   }
 
@@ -35,8 +35,8 @@ export default class List extends React.Component {
                   <Table.Cell>{item.category}</Table.Cell>
                   <Table.Cell>{item.id}</Table.Cell>
                   <Table.Cell>
-                    <Button size='mini' color='yellow'>Edit</Button>
-                    <Button size='mini' color='red' onClick={() => this.toggleModal(item.id)}>Delete</Button>
+                    <Button size='mini' color='yellow' onClick={() => {this.props.toggleEdit(item)}}>Edit</Button>
+                    <Button size='mini' color='red' onClick={() => this.toggleDeleteModal(item.id)}>Delete</Button>
                   </Table.Cell>
                 </Table.Row>
               })}
@@ -65,8 +65,8 @@ export default class List extends React.Component {
           <p>Are you sure you want to delete the record</p>
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={this.toggleModal}>No</Button>
-          <Button positive onClick={() => { this.props.deletePoint(this.state.id), this.toggleModal()}} labelPosition='right' icon='checkmark' content='Yes' />
+          <Button negative onClick={this.toggleDeleteModal}>No</Button>
+          <Button positive onClick={() => { this.props.deletePoint(this.state.id), this.toggleDeleteModal()}} labelPosition='right' icon='checkmark' content='Yes' />
         </Modal.Actions>
       </Modal>
       <ModalForm/>

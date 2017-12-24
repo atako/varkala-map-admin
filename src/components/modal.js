@@ -11,7 +11,6 @@ import {
   InfoWindow
 } from "react-google-maps"
 
-
 const options = [
   { key: 'm', text: 'Supermarkets', value: 'supermarkets' },
   { key: 'f', text: 'Beaches', value: 'beaches' },
@@ -115,7 +114,11 @@ class FormModal extends React.Component {
   }
 
   addPoint = (values) => {
-    this.props.addPoint(values)
+    this.props.modal.edit ? this.props.editPoint(values) : this.props.addPoint(values)
+  }
+
+  changePoint = (values) => {
+    this.props.editPoint
   }
 
   changeCoordinates = (lat, lng) => {
@@ -124,7 +127,6 @@ class FormModal extends React.Component {
   }
 
   render() {
-    
     return (
       <Modal open={this.props.modal.show} size='large'>
         <Modal.Header>Add a new point</Modal.Header>
@@ -178,8 +180,8 @@ class FormModal extends React.Component {
               <Button onClick={() => { this.props.togglemodal(), this.props.reset() }}>
                 <Icon name='remove'/> Cancel
               </Button>
-              <Button loading={this.props.addPointState === 'requested' ? true: false} type='submit' color='green'>
-                <Icon name='checkmark'/> Add
+              <Button type='submit' color='green'>
+                <Icon name='checkmark'/> { this.props.modal.edit ? 'Save' : 'Add' }
               </Button>
             </Form>
           </Modal.Content>
@@ -188,6 +190,10 @@ class FormModal extends React.Component {
   }
 }
 
-export default reduxForm({
-  form: 'newPoint'
+FormModal = reduxForm({
+  form: 'newPoint',
+  enableReinitialize: true
 })(FormModal)
+
+
+export default FormModal

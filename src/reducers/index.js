@@ -10,6 +10,9 @@ const points = handleActions({
   },
   [actions.deletePointSuccess](state, { payload}) {
     return payload.items
+  },
+  [actions.editPointSuccess](state, { payload }) {
+    return payload.item
   }
 }, [])
 
@@ -76,14 +79,29 @@ const user = handleActions({
   }
 }, null)
 
+
+const initialValues = handleActions({
+  [actions.toggleEdit](state, { payload }) {
+    return { ...payload }
+  }
+}, {})
+
 const modal = handleActions({
   [actions.togglemodal](state, {}) {
     return { show: !state.show}
   },
   [actions.addPointSuccess](state, {}) {
     return { show: false }
+  },
+  // [actions.editPoint](state, {}) {
+  //   return { show: !state.show }
+  // },
+  [actions.toggleEdit](state, {}) {
+    return { show: !state.show, edit: !state.edit }
   }
-}, { show: false })
+}, { show: false, edit: false })
+
+
 
 export default combineReducers({
   points,
@@ -92,5 +110,6 @@ export default combineReducers({
   modal,
   pointAddState,
   form: formReducer,
-  pointDeleteState
+  pointDeleteState,
+  initialValues
 })

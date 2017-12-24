@@ -5,6 +5,7 @@ const mapStateToProps = state => {
   const props = {
     points: state.points,
     modal: state.modal,
+    initialValues: state.initialValues
   }
   return props
 }
