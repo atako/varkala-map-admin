@@ -80,7 +80,7 @@ export const addPoint = (values) => async(dispatch) => {
   values.color = '#A4459A'
   values.id = id
   const description = values.description ? values.description : 'No description'
-  const objectItem = { title: values.title, description: description }
+  const objectItem = { title: values.title, description: description, img: values.img }
   try {
     const pointsRef = firebase.database().ref('points')
     pointsRef.child(id).set({ ...values })
@@ -121,7 +121,7 @@ export const editPoint = (pointValues) => async(dispatch) => {
     const pointRef = firebase.database().ref(`points/${pointValues.id}`)
     const objectRef = firebase.database().ref(`objects/${pointValues.id}`)
     pointRef.update(pointValues)
-    objectRef.update({ title: pointValues.title, description: pointValues.description})
+    objectRef.update({ title: pointValues.title, description: pointValues.description, en_title: pointValues.en_title})
     dispatch(toggleEdit())
   } catch (e) {
 

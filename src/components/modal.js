@@ -1,6 +1,6 @@
 /*global google */
 import React from 'react'
-import { Button, Header, Image, Modal, Icon, Form, Accordion, Divider } from 'semantic-ui-react'
+import { Button, Header, Image, Modal, Icon, Form, Accordion, Divider, Progress } from 'semantic-ui-react'
 import { Field, reduxForm } from 'redux-form'
 import { compose, withProps, withStateHandlers, withHandlers, withState } from "recompose"
 import {
@@ -10,6 +10,8 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps"
+import firebase from '../firebase'
+import FileUploader from 'react-firebase-file-uploader'
 
 const options = [
   { key: 'm', text: 'Supermarkets', value: 'supermarkets' },
@@ -107,7 +109,15 @@ const FormText = props => (
 )
 
 class FormModal extends React.Component {
-  state = { accordionOpen: true }
+  state = {
+      accordionOpen: true,
+      username: '',
+      avatar: '',
+      isUploading: false,
+      progress: 0,
+      avatarURL: '',
+      success: false
+    } 
 
   toggleAccordion = () => {
     this.setState ({ accordionOpen: !this.state.accordionOpen })
@@ -124,6 +134,25 @@ class FormModal extends React.Component {
   changeCoordinates = (lat, lng) => {
     this.props.change('lat', lat)
     this.props.change('lng', lng)
+  }
+
+  handleProgress = (progress) => this.setState({ progress })
+
+  handleUploadStart = () => {
+    this.setState({
+      isUploading: true,
+      progress: 0
+    })
+  }
+
+  handleUploadError = (error) => {
+    this.setState({ isUploading: false })
+    console.error(error)
+  }
+
+  handleUploadSuccess = (filename) => {
+    this.setState({ success: true, progress: 100, isUploading: false })
+    firebase.storage().ref('images').child(filename).getDownloadURL().then(url => this.props.change('img', url))
   }
 
   render() {
@@ -167,6 +196,28 @@ class FormModal extends React.Component {
                   placeholder="Description..."
                   type="text"
                 />
+              <Field
+                name="en_title"
+                component={FormText}
+                placeholder="English title"
+                type="text"
+              />
+            <Field
+              name="img"
+              component={FormText}
+              placeholder="Path to image"
+              type="text"
+            />
+            <FileUploader
+              accept="image/*"
+              randomizeFilename
+              storageRef={firebase.storage().ref('images')}
+              onUploadStart={this.handleUploadStart}
+              // onUploadError={this.handleUploadError}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+              />
+              <Progress percent={this.state.progress} progress success={this.state.success} indicating={this.state.isUploading} />
               {/* <Accordion style={{paddingBottom: '30px'}}>
                 <Accordion.Title active={this.state.accordionOpen} onClick={this.toggleAccordion}>
                   <Icon name='dropdown' />

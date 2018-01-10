@@ -91,9 +91,8 @@ class App extends Component {
   componentDidMount() {
     this.props.checkAuth()
   }
-
   render() {
-  if (!this.props.user || this.props.user.uid !== 'h4tfXGtSuTPwkwYaeffCAxwRLrk1') {
+    if (!this.props.user || this.props.user.uid !== 'h4tfXGtSuTPwkwYaeffCAxwRLrk1') {
       return (
         <div style={{
           position: 'absolute',
